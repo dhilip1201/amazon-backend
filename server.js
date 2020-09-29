@@ -2,6 +2,7 @@
 import express from 'express';
 import mongoose from 'mongoose'
 import Messages from './dbMessages.js';
+import cors from "cors";
 
 // app config
 const app= express();
@@ -11,6 +12,7 @@ const port =process.env.PORT || 9000
 
 // middleware
 app.use(express.json());
+app.use(cors());
 
 
 // db config
@@ -20,7 +22,9 @@ mongoose.connect(connection_url,{
     useNewUrlParser:true,
     useUnifiedTopology:true
 })
-
+mongoose.connection.once("once",()=>{
+    console.log("DB Connected");
+})
 
 // api routes
 app.get('/',(req,res)=> res.status(200).send('welcome our site'));
